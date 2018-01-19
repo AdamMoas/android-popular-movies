@@ -24,7 +24,10 @@ public final class NetworkUtils {
     private static final String POPULAR_MOVIE_ENDPOINT =
             "http://api.themoviedb.org/3/movie/popular";
 
-    private static final String MOVIE_DB_BASE_URL = POPULAR_MOVIE_ENDPOINT;
+    private static final String TOP_RATED_MOVIE_ENDPOINT =
+            "http://api.themoviedb.org/3/movie/top_rated";
+
+    private static final String MOVIE_DB_BASE_URL = TOP_RATED_MOVIE_ENDPOINT;
 
     private final static String QUERY_PARAM = "api_key";
 
