@@ -12,11 +12,27 @@ public final class MovieJSONUtils {
         return new Gson().fromJson(apiResponse, MovieResponse.class);
     }
 
-    public static String getPosterPath(String apiResponse, int position) {
+    public static int getMovieCount(String apiResponse) {
+        return getMovieJSONResponse(apiResponse).results.length;
+    }
+
+    public static String getMoviePosterPath(String apiResponse, int position) {
         return getMovieJSONResponse(apiResponse).results[position].poster_path;
     }
 
-    public static int getMovieCount(String apiResponse) {
-        return getMovieJSONResponse(apiResponse).results.length;
+    public static String getMovieTitle(String apiResponse, int position) {
+        return getMovieJSONResponse(apiResponse).results[position].title;
+    }
+
+    public static String getMovieOverview(String apiResponse, int position) {
+        return getMovieJSONResponse(apiResponse).results[position].overview;
+    }
+
+    public static String getMovieOReleaseDate(String apiResponse, int position) {
+        return getMovieJSONResponse(apiResponse).results[position].release_date;
+    }
+
+    public static double getMovieVoteAverage(String apiResponse, int position) {
+        return getMovieJSONResponse(apiResponse).results[position].vote_average;
     }
 }

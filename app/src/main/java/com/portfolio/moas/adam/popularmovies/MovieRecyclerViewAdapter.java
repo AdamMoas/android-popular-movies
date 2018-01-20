@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -41,7 +40,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String posterImagePath = MovieJSONUtils.getPosterPath(mJSONResponse, position);
+        String posterImagePath = MovieJSONUtils.getMoviePosterPath(mJSONResponse, position);
 
         if (mContext != null) {
             Picasso.with(mContext)
