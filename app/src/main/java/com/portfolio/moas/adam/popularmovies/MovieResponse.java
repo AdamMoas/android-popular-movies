@@ -6,6 +6,7 @@ package com.portfolio.moas.adam.popularmovies;
  */
 
 public class MovieResponse {
+    // Referenced from: https://futurestud.io/tutorials/gson-mapping-of-arrays-and-lists-of-objects
     public int page;
     public int total_results;
     public int total_pages;

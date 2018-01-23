@@ -18,9 +18,6 @@ public class MovieDetailActivity extends AppCompatActivity {
     TextView mMovieVoteAverage;
     ImageView mMoviePosterImage;
 
-    private static final String MOVIE_POSTER_IMAGE_SIZE = "w500";
-    private static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/" + MOVIE_POSTER_IMAGE_SIZE;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,25 +33,28 @@ public class MovieDetailActivity extends AppCompatActivity {
         Resources res = getResources();
 
         if (extras != null) {
-            Double voteAverage = extras.getDouble("voteAverage");
+            Double voteAverage = extras.getDouble(getString(R.string.vote_average_key));
             int scoreTotal = 10;
+            // Referenced from: https://developer.android.com/guide/topics/resources/string-resource.html#FormattingAndStyling
             String formattedVotedAverage = res.getString(R.string.user_rating, voteAverage, scoreTotal);
 
-            mMovieTitle.setText(extras.getString("title"));
-            mMovieOverview.setText(extras.getString("overview"));
-            mMovieReleaseDate.setText(extras.getString("releaseDate"));
+            mMovieTitle.setText(extras.getString(getString(R.string.title_key)));
+            mMovieOverview.setText(extras.getString(getString(R.string.overview_key)));
+            mMovieReleaseDate.setText(extras.getString(getString(R.string.release_date_key)));
             mMovieVoteAverage.setText(formattedVotedAverage);
             displayPosterImage(extras, mMoviePosterImage);
         }
     }
 
     private void displayPosterImage(Bundle extras, ImageView imageView) {
-        String posterImagePath = extras.getString("posterPath");
+        String posterImagePath = extras.getString(getString(R.string.poster_path_key));
+        String moviePosterImageSize = "w500";
+        String moviePosterBaseUrl = "http://image.tmdb.org/t/p/" + moviePosterImageSize;
 
         Picasso.with(this)
-                .load(MOVIE_POSTER_BASE_URL + posterImagePath)
+                .load(moviePosterBaseUrl + posterImagePath)
                 .placeholder(R.drawable.placeholder_background)
                 .into(imageView);
-        Log.d("ImagePath: ", MOVIE_POSTER_BASE_URL + posterImagePath);
+        Log.d("ImagePath: ", moviePosterBaseUrl + posterImagePath);
     }
 }

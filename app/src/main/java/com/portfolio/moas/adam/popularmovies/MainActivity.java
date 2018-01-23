@@ -16,6 +16,9 @@ import android.widget.ProgressBar;
 
 import java.net.URL;
 
+import static com.portfolio.moas.adam.popularmovies.Constants.SORT_BY_POPULARITY;
+import static com.portfolio.moas.adam.popularmovies.Constants.SORT_BY_TOP_RATED;
+
 public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.ItemClickListener {
 
     MovieRecyclerViewAdapter movieRecyclerViewAdapter;
@@ -24,10 +27,7 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private String mJsonResponse;
-//    boolean isSortedByPopularity = true;
 
-    public static final String SORT_BY_POPULARITY = "popularity";
-    public static final String SORT_BY_TOP_RATED = "topRated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,11 +115,11 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
 
     private Bundle bundleMovieDataFromJson(int position) {
         Bundle movieBundle = new Bundle();
-        movieBundle.putString("title", MovieJSONUtils.getMovieTitle(mJsonResponse, position));
-        movieBundle.putString("overview", MovieJSONUtils.getMovieOverview(mJsonResponse, position));
-        movieBundle.putString("releaseDate", MovieJSONUtils.getMovieOReleaseDate(mJsonResponse, position));
-        movieBundle.putDouble("voteAverage", MovieJSONUtils.getMovieVoteAverage(mJsonResponse, position));
-        movieBundle.putString("posterPath", MovieJSONUtils.getMoviePosterPath(mJsonResponse, position));
+        movieBundle.putString(getString(R.string.title_key), MovieJSONUtils.getMovieTitle(mJsonResponse, position));
+        movieBundle.putString(getString(R.string.overview_key), MovieJSONUtils.getMovieOverview(mJsonResponse, position));
+        movieBundle.putString(getString(R.string.release_date_key), MovieJSONUtils.getMovieOReleaseDate(mJsonResponse, position));
+        movieBundle.putDouble(getString(R.string.vote_average_key), MovieJSONUtils.getMovieVoteAverage(mJsonResponse, position));
+        movieBundle.putString(getString(R.string.poster_path_key), MovieJSONUtils.getMoviePosterPath(mJsonResponse, position));
 
         return movieBundle;
     }
@@ -130,22 +130,6 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         menuInflater.inflate(R.menu.menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.settings_action) {
-//            if (isSortedByPopularity) {
-//                item.setTitle(R.string.popular_action);
-//                loadMovieData(SORT_BY_POPULARITY);
-//            } else {
-//                item.setTitle(R.string.top_rated_action);
-//                loadMovieData(SORT_BY_TOP_RATED);
-//            }
-//            isSortedByPopularity = !isSortedByPopularity;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

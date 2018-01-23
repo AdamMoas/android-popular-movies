@@ -7,7 +7,7 @@ import com.google.gson.Gson;
  */
 
 public final class MovieJSONUtils {
-
+    // Referenced from: https://futurestud.io/tutorials/gson-mapping-of-arrays-and-lists-of-objects
     private static MovieResponse getMovieJSONResponse(String apiResponse) {
         return new Gson().fromJson(apiResponse, MovieResponse.class);
     }

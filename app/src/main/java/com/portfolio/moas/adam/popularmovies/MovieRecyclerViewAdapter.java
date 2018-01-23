@@ -2,7 +2,6 @@ package com.portfolio.moas.adam.popularmovies;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private int mNumItems;
     private String mJSONResponse;
 
-    private static final String MOVIE_POSTER_IMAGE_SIZE = "w780";
-    private static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/" + MOVIE_POSTER_IMAGE_SIZE;
-
     MovieRecyclerViewAdapter(Context context, int numItems, String jsonResponse) {
         mNumItems = numItems;
         mContext = context;
@@ -43,11 +39,11 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         String posterImagePath = MovieJSONUtils.getMoviePosterPath(mJSONResponse, position);
 
         if (mContext != null) {
+            String moviePosterImageSize = "w780";
+            String moviePosterBaseUrl = "http://image.tmdb.org/t/p/" + moviePosterImageSize;
             Picasso.with(mContext)
-                    .load(MOVIE_POSTER_BASE_URL + posterImagePath)
+                    .load(moviePosterBaseUrl + posterImagePath)
                     .into(holder.imageView);
-        } else {
-            Log.d("Picasso", "Picasso context is null");
         }
     }
 

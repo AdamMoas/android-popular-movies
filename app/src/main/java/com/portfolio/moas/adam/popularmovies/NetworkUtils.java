@@ -10,6 +10,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
+import static com.portfolio.moas.adam.popularmovies.Constants.SORT_BY_POPULARITY;
+import static com.portfolio.moas.adam.popularmovies.Constants.SORT_BY_TOP_RATED;
+
 /**
  * Created by adam on 17/01/2018.
  */
@@ -28,9 +31,9 @@ final class NetworkUtils {
 
     private static String setBaseUrl(String sortBy) {
         switch (sortBy) {
-            case "popularity":
+            case SORT_BY_POPULARITY:
                 return POPULAR_MOVIE_ENDPOINT;
-            case "topRated":
+            case SORT_BY_TOP_RATED:
                 return TOP_RATED_MOVIE_ENDPOINT;
         }
         return null;
@@ -53,6 +56,7 @@ final class NetworkUtils {
         return url;
     }
 
+    // Referenced from: Udacity Nanodegree coursework material:
     static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
