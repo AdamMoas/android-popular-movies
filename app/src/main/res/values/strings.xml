@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="poster_image">Poster Image displaying movie</string>
-    <string name="title_activity_movie_detail">MovieDetailActivity</string>
+    <string name="title_activity_movie_detail">Movie Details</string>
+
+    <string name="top_rated_action">Sort by: Top Rated</string>
+    <string name="popular_action">Sort by: Most Popular</string>
+
+    <string name="network_error_message">A network error has occurred. Please check your connection and try again.</string>
+
+    <string name="user_rating">%.1f/%2$d</string>
+
 </resources>

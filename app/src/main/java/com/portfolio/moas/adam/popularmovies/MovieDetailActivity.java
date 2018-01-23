@@ -1,6 +1,6 @@
 package com.portfolio.moas.adam.popularmovies;
 
-import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,10 +18,8 @@ public class MovieDetailActivity extends AppCompatActivity {
     TextView mMovieVoteAverage;
     ImageView mMoviePosterImage;
 
-    //TODO This is temporary. Move this into constants along with the same in Adapter
     private static final String MOVIE_POSTER_IMAGE_SIZE = "w500";
     private static final String MOVIE_POSTER_BASE_URL = "http://image.tmdb.org/t/p/" + MOVIE_POSTER_IMAGE_SIZE;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,28 +32,29 @@ public class MovieDetailActivity extends AppCompatActivity {
         mMovieVoteAverage = (TextView) findViewById(R.id.movie_vote_average);
         mMoviePosterImage = (ImageView) findViewById(R.id.movie_poster);
 
-        Intent intent = getIntent();
+        Bundle extras = getIntent().getExtras();
+        Resources res = getResources();
 
-        mMovieTitle.setText(intent.getExtras().getString("title"));
-        mMovieOverview.setText(intent.getExtras().getString("overview"));
-        mMovieReleaseDate.setText(intent.getExtras().getString("releaseDate"));
-        mMovieVoteAverage.setText(Double.toString(intent.getExtras().getDouble("voteAverage")) + "/10");
-        displayPosterImage(intent, mMoviePosterImage);
+        if (extras != null) {
+            Double voteAverage = extras.getDouble("voteAverage");
+            int scoreTotal = 10;
+            String formattedVotedAverage = res.getString(R.string.user_rating, voteAverage, scoreTotal);
 
-    }
-
-    private void displayPosterImage(Intent intent, ImageView imageView) {
-        String posterImagePath = intent.getExtras().getString("posterPath");
-
-        if (this != null) {
-            Picasso.with(this)
-                    .load(MOVIE_POSTER_BASE_URL + posterImagePath)
-                    .into(imageView);
-            System.out.println("ImagePath: " + MOVIE_POSTER_BASE_URL + posterImagePath);
-        } else {
-            Log.d("Picasso", "Picasso context is null");
+            mMovieTitle.setText(extras.getString("title"));
+            mMovieOverview.setText(extras.getString("overview"));
+            mMovieReleaseDate.setText(extras.getString("releaseDate"));
+            mMovieVoteAverage.setText(formattedVotedAverage);
+            displayPosterImage(extras, mMoviePosterImage);
         }
     }
 
+    private void displayPosterImage(Bundle extras, ImageView imageView) {
+        String posterImagePath = extras.getString("posterPath");
 
+        Picasso.with(this)
+                .load(MOVIE_POSTER_BASE_URL + posterImagePath)
+                .placeholder(R.drawable.placeholder_background)
+                .into(imageView);
+        Log.d("ImagePath: ", MOVIE_POSTER_BASE_URL + posterImagePath);
+    }
 }

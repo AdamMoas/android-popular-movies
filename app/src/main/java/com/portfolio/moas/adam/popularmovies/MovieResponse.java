@@ -9,15 +9,15 @@ public class MovieResponse {
     public int page;
     public int total_results;
     public int total_pages;
-    public Movie[] results;
+    Movie[] results;
 
     public static class Movie {
         public String title;
         public String popularity;
-        public String release_date;
-        public String poster_path;
-        public String overview;
-        public double vote_average;
+        String release_date;
+        String poster_path;
+        String overview;
+        double vote_average;
         public int id;
         public boolean video;
     }

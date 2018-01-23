@@ -14,12 +14,9 @@ import java.util.Scanner;
  * Created by adam on 17/01/2018.
  */
 
-public final class NetworkUtils {
+final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
-
-    private static final String POPULAR_MOVIE_ENDPOINT_Backup =
-            "http://api.themoviedb.org/3/movie/popular?api_key=";
 
     private static final String POPULAR_MOVIE_ENDPOINT =
             "http://api.themoviedb.org/3/movie/popular";
@@ -27,13 +24,20 @@ public final class NetworkUtils {
     private static final String TOP_RATED_MOVIE_ENDPOINT =
             "http://api.themoviedb.org/3/movie/top_rated";
 
-    private static final String MOVIE_DB_BASE_URL = TOP_RATED_MOVIE_ENDPOINT;
-
     private final static String QUERY_PARAM = "api_key";
 
+    private static String setBaseUrl(String sortBy) {
+        switch (sortBy) {
+            case "popularity":
+                return POPULAR_MOVIE_ENDPOINT;
+            case "topRated":
+                return TOP_RATED_MOVIE_ENDPOINT;
+        }
+        return null;
+    }
 
-    public static URL buildUrl(String api_key) {
-        Uri builtUri = Uri.parse(MOVIE_DB_BASE_URL).buildUpon()
+    static URL buildUrl(String api_key, String sortBy) {
+        Uri builtUri = Uri.parse(setBaseUrl(sortBy)).buildUpon()
                 .appendQueryParameter(QUERY_PARAM, api_key)
                 .build();
 
@@ -49,14 +53,7 @@ public final class NetworkUtils {
         return url;
     }
 
-    /**
-     * This method returns the entire result from the HTTP response.
-     *
-     * @param url The URL to fetch the HTTP response from.
-     * @return The contents of the HTTP response.
-     * @throws IOException Related to network and stream reading
-     */
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
+    static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
             InputStream in = urlConnection.getInputStream();
