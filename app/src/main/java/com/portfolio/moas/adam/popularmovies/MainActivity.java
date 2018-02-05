@@ -153,4 +153,4 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         snackBarView.setBackgroundColor(getResources().getColor(R.color.errorRed));
         snackbar.show();
     }
-}
+}   
