@@ -1,6 +1,9 @@
 package com.portfolio.moas.adam.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -70,7 +73,25 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     }
 
     private void loadMovieData(String sortBy) {
-        new FetchMoviePosterTask().execute(sortBy);
+        if (isDeviceConnectedToNetwork()) {
+            new FetchMoviePosterTask().execute(sortBy);
+            Log.d("Connection tag", "Device connected to the internet");
+        } else {
+            Log.d("Connection tag", "Device NOT connected to the internet");
+            displayError("Network error. Please reconnect and try again.");
+        }
+    }
+
+    // Suggested in code review. Referenced from: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
+    private boolean isDeviceConnectedToNetwork() {
+        boolean isConnected = false;
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (cm != null) {
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        }
+        return isConnected;
     }
 
     public class FetchMoviePosterTask extends AsyncTask<String, Void, String> {
