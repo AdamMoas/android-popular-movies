@@ -11,6 +11,7 @@
 
     <!--Errors-->
     <string name="network_error_message">A network error has occurred. Please check your connection and try again.</string>
+    <string name="api_response_failure_message">Failed to get movie data. Please check connection and try again</string>
 
     <!--String formatting-->
     <string name="user_rating">%.1f/%2$d</string>
@@ -21,6 +22,7 @@
     <string name="release_date_key">releaseDate</string>
     <string name="vote_average_key">voteAverage</string>
     <string name="poster_path_key">posterPath</string>
+    <string name="movie_trailer_key">movieTrailer</string>
 
     <!--URL sort variables-->
     <string name="popularity_sort">popularity</string>
