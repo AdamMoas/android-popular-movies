@@ -25,6 +25,8 @@ import com.portfolio.moas.adam.popularmovies.features.movie.detail.MovieDetailAc
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,8 +39,10 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     MovieRecyclerViewAdapter movieRecyclerViewAdapter;
     private int movieCount;
 
-    private ProgressBar progressBar;
-    private RecyclerView recyclerView;
+    @BindView(R.id.pb_loading)
+    ProgressBar progressBar;
+    @BindView(R.id.rv_movie_thumbnails)
+    RecyclerView recyclerView;
 
     private MovieDbService movieDbService;
     private ArrayList<Movie> mMovies;
@@ -47,12 +51,11 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        progressBar = findViewById(R.id.pb_loading);
         movieDbService = ApiUtils.getMovieDbService();
 
         setUpRecyclerView();
-
         loadMovieData(SORT_BY_POPULARITY);
     }
 
@@ -89,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     }
 
     private void setUpRecyclerView() {
-        recyclerView = findViewById(R.id.rv_movie_thumbnails);
         int numberOfColumns = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
         recyclerView.setHasFixedSize(true);

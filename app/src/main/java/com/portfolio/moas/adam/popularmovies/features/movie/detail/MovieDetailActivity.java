@@ -14,29 +14,32 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MovieDetailActivity extends AppCompatActivity {
 
+    @BindView(R.id.movie_title)
     TextView mMovieTitle;
+    @BindView(R.id.movie_overview)
     TextView mMovieOverview;
+    @BindView(R.id.movie_release_date)
     TextView mMovieReleaseDate;
+    @BindView(R.id.movie_vote_average)
     TextView mMovieVoteAverage;
+    @BindView(R.id.movie_poster)
     ImageView mMoviePosterImage;
+    @BindView(R.id.movie_favourite)
     ImageView mFavouriteStarImage;
+    @BindView(R.id.movie_trailer_list)
     ListView mMovieTrailerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-
-        mMovieTitle = (TextView) findViewById(R.id.movie_title);
-        mMovieOverview = (TextView) findViewById(R.id.movie_overview);
-        mMovieReleaseDate = (TextView) findViewById(R.id.movie_release_date);
-        mMovieVoteAverage = (TextView) findViewById(R.id.movie_vote_average);
-        mMoviePosterImage = (ImageView) findViewById(R.id.movie_poster);
-        mFavouriteStarImage = (ImageView) findViewById(R.id.movie_favourite);
-        mMovieTrailerList = (ListView) findViewById(R.id.movie_trailer_list);
+        ButterKnife.bind(this);
 
         Bundle extras = getIntent().getExtras();
         Resources res = getResources();
