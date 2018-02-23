@@ -11,7 +11,7 @@ import com.portfolio.moas.adam.popularmovies.R;
 import com.portfolio.moas.adam.popularmovies.data.model.Movie;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by adam on 15/01/2018.
@@ -23,9 +23,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private ItemClickListener mClickListener;
     private Context mContext;
     private int mNumItems;
-    private List<Movie> mMovies;
+    private ArrayList<Movie> mMovies;
 
-    MovieRecyclerViewAdapter(Context context, int numItems, List<Movie> movies) {
+    MovieRecyclerViewAdapter(Context context, int numItems, ArrayList<Movie> movies) {
         mNumItems = numItems;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);

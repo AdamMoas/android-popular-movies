@@ -18,6 +18,7 @@ import com.portfolio.moas.adam.popularmovies.data.model.Movie;
 import com.portfolio.moas.adam.popularmovies.data.model.MovieResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
 import com.portfolio.moas.adam.popularmovies.features.movie.detail.MovieDetailActivity;
+import com.portfolio.moas.adam.popularmovies.utils.Constants;
 import com.portfolio.moas.adam.popularmovies.utils.ErrorHelper;
 import com.portfolio.moas.adam.popularmovies.utils.NetworkUtils;
 
@@ -119,8 +120,8 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     @Override
     public void onItemClick(View view, int position) {
         Intent detailActivityIntent = new Intent(MainActivity.this, MovieDetailActivity.class);
-        detailActivityIntent.putExtra("dataPosition", position);
-        detailActivityIntent.putExtra("dataParcelTest", mMovies);
+        detailActivityIntent.putExtra(Constants.MOVIE_DETAIL_PARCEL_EXTRA, mMovies);
+        detailActivityIntent.putExtra(Constants.MOVIE_POSITION_EXTRA, position);
         startActivity(detailActivityIntent);
     }
 

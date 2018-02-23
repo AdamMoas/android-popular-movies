@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.portfolio.moas.adam.popularmovies.R;
@@ -16,6 +15,7 @@ import com.portfolio.moas.adam.popularmovies.data.ApiUtils;
 import com.portfolio.moas.adam.popularmovies.data.model.Movie;
 import com.portfolio.moas.adam.popularmovies.data.model.TrailerResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
+import com.portfolio.moas.adam.popularmovies.utils.Constants;
 import com.portfolio.moas.adam.popularmovies.utils.ErrorHelper;
 import com.squareup.picasso.Picasso;
 
@@ -43,11 +43,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     ImageView mMoviePosterImage;
     @BindView(R.id.movie_favourite)
     ImageView mFavouriteStarImage;
-    @BindView(R.id.movie_trailer_list)
-    ListView mMovieTrailerList;
 
-    @BindView(R.id.trailer_text)
-    TextView mTrailerText;
+//    @BindView(R.id.trailer_text)
+//    TextView mTrailerText;
 
     private MovieDbService movieDbService;
     private ArrayList<Movie> mMovies;
@@ -59,8 +57,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         movieDbService = ApiUtils.getMovieDbService();
-        mMovies = getIntent().getParcelableArrayListExtra("dataParcelTest");
-        int movieItemPosition = getIntent().getIntExtra("dataPosition", 0);
+        mMovies = getIntent().getParcelableArrayListExtra(Constants.MOVIE_DETAIL_PARCEL_EXTRA);
+        int movieItemPosition = getIntent().getIntExtra(Constants.MOVIE_POSITION_EXTRA, 0);
 
         bindMovieDetailData(mMovies, movieItemPosition);
     }
@@ -124,7 +122,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     for (int i = 0; i <= numberOfTrailers - 1; i++) {
                         youtubeKeys.add(response.body().getResults().get(i).getKey());
                         System.out.println("Key position: " + i + " - Key value: " + youtubeKeys.get(i));
-                        mTrailerText.append(youtubeKeys.get(i) + "\n ");
+//                        mTrailerText.append(youtubeKeys.get(i) + "\n "); //TODO this is causing some of the views to glitch - replace with RV
                     }
                 }
             }

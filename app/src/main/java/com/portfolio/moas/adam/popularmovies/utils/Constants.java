@@ -9,4 +9,7 @@ public class Constants {
     public static final String SORT_BY_POPULARITY = "popular";
     public static final String SORT_BY_TOP_RATED = "top_rated";
 
+    public static final String MOVIE_DETAIL_PARCEL_EXTRA = "dataParcel";
+    public static final String MOVIE_POSITION_EXTRA = "dataPosition";
+
 }

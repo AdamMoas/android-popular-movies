@@ -34,13 +34,4 @@ public interface MovieDbService {
     @GET("movie/{id}/reviews")
     Call<ReviewResponse> getReviews(@Path("id") int id, @Query("api_key") String apiKey);
 
-//    @GET("movie/top_rated")
-//    Call<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey);
-//
-//    @GET("movie/popular")
-//    Call<MovieResponse> getPopularMovies(@Query("api_key") String apiKey);
-
-//    @GET("movie/{id}")
-//    Call<MovieResponse> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey);
-
 }
