@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by adam on 09/02/2018.
  */
 
-public class MoviesResponse implements Parcelable {
+public class MovieResponse implements Parcelable {
     @SerializedName("page")
     @Expose
     private Integer page;
@@ -24,7 +24,6 @@ public class MoviesResponse implements Parcelable {
     private Integer totalPages;
     @SerializedName("results")
     @Expose
-
     private ArrayList<Movie> results;
 
     public Integer getPage() {
@@ -72,25 +71,25 @@ public class MoviesResponse implements Parcelable {
         dest.writeTypedList(this.results);
     }
 
-    public MoviesResponse() {
+    public MovieResponse() {
     }
 
-    protected MoviesResponse(Parcel in) {
+    protected MovieResponse(Parcel in) {
         this.page = (Integer) in.readValue(Integer.class.getClassLoader());
         this.totalResults = (Integer) in.readValue(Integer.class.getClassLoader());
         this.totalPages = (Integer) in.readValue(Integer.class.getClassLoader());
         this.results = in.createTypedArrayList(Movie.CREATOR);
     }
 
-    public static final Creator<MoviesResponse> CREATOR = new Creator<MoviesResponse>() {
+    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
         @Override
-        public MoviesResponse createFromParcel(Parcel source) {
-            return new MoviesResponse(source);
+        public MovieResponse createFromParcel(Parcel source) {
+            return new MovieResponse(source);
         }
 
         @Override
-        public MoviesResponse[] newArray(int size) {
-            return new MoviesResponse[size];
+        public MovieResponse[] newArray(int size) {
+            return new MovieResponse[size];
         }
     };
 }

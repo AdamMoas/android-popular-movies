@@ -1,11 +1,7 @@
 package com.portfolio.moas.adam.popularmovies.features.main.screen;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,9 +15,11 @@ import android.widget.ProgressBar;
 import com.portfolio.moas.adam.popularmovies.R;
 import com.portfolio.moas.adam.popularmovies.data.ApiUtils;
 import com.portfolio.moas.adam.popularmovies.data.model.Movie;
-import com.portfolio.moas.adam.popularmovies.data.model.MoviesResponse;
+import com.portfolio.moas.adam.popularmovies.data.model.MovieResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
 import com.portfolio.moas.adam.popularmovies.features.movie.detail.MovieDetailActivity;
+import com.portfolio.moas.adam.popularmovies.utils.ErrorHelper;
+import com.portfolio.moas.adam.popularmovies.utils.NetworkUtils;
 
 import java.util.ArrayList;
 
@@ -64,27 +62,32 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         String apiKey = getString(R.string.TMDB_API_KEY);
         if (apiKey.isEmpty()) {
             Log.d("API-KEY", "API Key missing");
+            return;
         }
         showLoadingIndicator();
 
-        Call<MoviesResponse> call = movieDbService.getAllMovies(sortBy, apiKey);
-        call.enqueue(new Callback<MoviesResponse>() {
+        Call<MovieResponse> call = movieDbService.getAllMovies(sortBy, apiKey);
+        call.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                 if (response.isSuccessful()) {
                     ArrayList<Movie> movies = response.body().getResults();
                     mMovies = movies;
                     movieCount = movies.size();
-                    System.out.println("Title: " + movies.get(0).getTitle());
+                    for (int i = 0; i < movies.size(); i++) {
+                        System.out.println("Title: " + movies.get(i).getOverview());
+                    }
                     hideLoadingIndicator();
                     displayMovies();
                 }
             }
 
             @Override
-            public void onFailure(Call<MoviesResponse> call, Throwable t) {
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
                 hideLoadingIndicator();
-                displayError(getString(R.string.api_response_failure_message));
+                ErrorHelper.displayError(MainActivity.this,
+                        findViewById(R.id.main_layout),
+                        getString(R.string.api_response_failure_message));
                 Log.d("Failure", t.toString());
             }
         });
@@ -107,73 +110,29 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
         if (mMovies != null && movieCount != 0) {
             setUpAdapter(movieCount);
         } else {
-            displayError(getString(R.string.network_error_message));
+            ErrorHelper.displayError(MainActivity.this,
+                    findViewById(R.id.main_layout),
+                    getString(R.string.network_error_message));
         }
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Intent detailActivityIntent = new Intent(MainActivity.this, MovieDetailActivity.class);
-//        detailActivityIntent.putExtras(bundleMovieDataFromJson(position));
-        detailActivityIntent.putExtra("dataParcelTest", mMovies);
         detailActivityIntent.putExtra("dataPosition", position);
+        detailActivityIntent.putExtra("dataParcelTest", mMovies);
         startActivity(detailActivityIntent);
     }
 
     private void loadMovieData(String sortBy) {
-        if (isDeviceConnectedToNetwork()) {
-//            new FetchMoviePosterTask().execute(sortBy); // TODO test
+        if (NetworkUtils.isDeviceConnectedToNetwork(this)) {
             fetchMovieDetails(sortBy);
-            Log.d("Connection tag", "Device connected to the internet");
         } else {
-            Log.d("Connection tag", "Device NOT connected to the internet");
-            displayError("Network error. Please reconnect and try again.");
+            ErrorHelper.displayError(MainActivity.this,
+                    findViewById(R.id.main_layout),
+                    getString(R.string.network_error_message));
         }
     }
-
-    // Suggested in code review. Referenced from: https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
-    private boolean isDeviceConnectedToNetwork() {
-        boolean isConnected = false;
-        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        if (cm != null) {
-            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-            isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        }
-        return isConnected;
-    }
-
-//    public class FetchMoviePosterTask extends AsyncTask<String, Void, String> {
-//
-//        @Override
-//        protected void onPreExecute() {
-//            showLoadingIndicator();
-//            super.onPreExecute();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            String sortBy = params[0];
-//            URL movieDBURL = NetworkUtils.buildUrl(getString(R.string.TMDB_API_KEY), sortBy);
-//            Log.d("MovieDBURL", movieDBURL.toString());
-//            try {
-//                return NetworkUtils
-//                        .getResponseFromHttpUrl(movieDBURL);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String jsonResponse) {
-//            hideLoadingIndicator();
-//            mJsonResponse = jsonResponse;
-////            displayMovies(jsonResponse);
-//            Log.d("RetrofitTest", jsonResponse);
-//            super.onPostExecute(jsonResponse);
-//        }
-//    }
 
     private void showLoadingIndicator() {
         progressBar.setVisibility(View.VISIBLE);
@@ -182,20 +141,6 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
     private void hideLoadingIndicator() {
         progressBar.setVisibility(View.INVISIBLE);
     }
-
-//    private Bundle bundleMovieDataFromJson(int position) {
-//        Bundle movieBundle = new Bundle();
-////        movieBundle.putString(getString(R.string.title_key), MovieJSONUtils.getMovieTitle(mJsonResponse, position));
-////        movieBundle.putString(getString(R.string.overview_key), MovieJSONUtils.getMovieOverview(mJsonResponse, position));
-////        movieBundle.putString(getString(R.string.release_date_key), MovieJSONUtils.getMovieOReleaseDate(mJsonResponse, position));
-////        movieBundle.putDouble(getString(R.string.vote_average_key), MovieJSONUtils.getMovieVoteAverage(mJsonResponse, position));
-////        movieBundle.putString(getString(R.string.poster_path_key), MovieJSONUtils.getMoviePosterPath(mJsonResponse, position));
-////        movieBundle.putInt(getString(R.string.movie_trailer_key), MovieJSONUtils.getMovieId(mJsonResponse, position));
-//
-////        movieBundle.putString(getString(R.string.title_key), mMovies.get(position).getTitle());
-//
-//        return movieBundle;
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -218,12 +163,5 @@ public class MainActivity extends AppCompatActivity implements MovieRecyclerView
                 loadMovieData(SORT_BY_TOP_RATED);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void displayError(String errorMessage) {
-        Snackbar snackbar = Snackbar.make(findViewById(R.id.main_layout), errorMessage, Snackbar.LENGTH_LONG);
-        View snackBarView = snackbar.getView();
-        snackBarView.setBackgroundColor(getResources().getColor(R.color.errorRed));
-        snackbar.show();
     }
 }
