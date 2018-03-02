@@ -17,6 +17,7 @@ import com.portfolio.moas.adam.popularmovies.data.ApiUtils;
 import com.portfolio.moas.adam.popularmovies.data.model.Movie;
 import com.portfolio.moas.adam.popularmovies.data.model.MovieResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
+import com.portfolio.moas.adam.popularmovies.features.ItemClickListener;
 import com.portfolio.moas.adam.popularmovies.features.movie.detail.MovieDetailActivity;
 import com.portfolio.moas.adam.popularmovies.utils.Constants;
 import com.portfolio.moas.adam.popularmovies.utils.ErrorHelper;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 import static com.portfolio.moas.adam.popularmovies.utils.Constants.SORT_BY_POPULARITY;
 import static com.portfolio.moas.adam.popularmovies.utils.Constants.SORT_BY_TOP_RATED;
 
-public class MainActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements ItemClickListener {
 
     MovieRecyclerViewAdapter movieRecyclerViewAdapter;
     private int movieCount;

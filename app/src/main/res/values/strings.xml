@@ -27,4 +27,9 @@
     <!--URL sort variables-->
     <string name="popularity_sort">popularity</string>
     <string name="top_rated_sort">topRated</string>
+
+
+    <!--Headings-->
+    <string name="trailer_heading">Trailers:</string>
+    <string name="review_button">Reviews:</string>
 </resources>

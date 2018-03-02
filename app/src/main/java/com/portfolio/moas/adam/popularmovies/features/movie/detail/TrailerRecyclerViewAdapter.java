@@ -1,55 +1,55 @@
-package com.portfolio.moas.adam.popularmovies.features.main.screen;
+package com.portfolio.moas.adam.popularmovies.features.movie.detail;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.portfolio.moas.adam.popularmovies.R;
-import com.portfolio.moas.adam.popularmovies.data.model.Movie;
+import com.portfolio.moas.adam.popularmovies.data.model.Trailer;
 import com.portfolio.moas.adam.popularmovies.features.ItemClickListener;
-import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by adam on 15/01/2018.
+ * Created by adam on 23/02/2018.
  */
 
-public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecyclerViewAdapter.ViewHolder> {
+public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecyclerViewAdapter.ViewHolder> {
 
     private LayoutInflater mLayoutInflater;
     private ItemClickListener mClickListener;
     private Context mContext;
     private int mNumItems;
-    private ArrayList<Movie> mMovies;
+    private List<Trailer> mTrailers;
 
-    MovieRecyclerViewAdapter(Context context, int numItems, ArrayList<Movie> movies) {
+    TrailerRecyclerViewAdapter(Context context, int numItems, List<Trailer> trailers) {
         mNumItems = numItems;
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
-        mMovies = movies;
+        mTrailers = trailers;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mLayoutInflater.inflate(R.layout.grid_cell, parent, false);
+        View view = mLayoutInflater.inflate(R.layout.trailer_cell, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        String posterImagePath2 = mMovies.get(position).getPosterPath();
+    public void onBindViewHolder(TrailerRecyclerViewAdapter.ViewHolder holder, int position) {
+//        List<String> youtubeKeys = new ArrayList<>();
+//        youtubeKeys.add(mTrailers.get(position).getKey());
+//        youtubeKeys.get(position);
 
-        if (mContext != null) {
-            String moviePosterImageSize = "w780";
-            String moviePosterBaseUrl = "http://image.tmdb.org/t/p/" + moviePosterImageSize;
-            Picasso.with(mContext)
-                    .load(moviePosterBaseUrl + posterImagePath2)
-                    .into(holder.imageView);
-        }
+//        mTrailers.get(position).getKey();
+        String trailerName = mTrailers.get(position).getName();
+        holder.textView.setText(trailerName);
+
+        String trailerKey = mTrailers.get(position).getKey(); // TODO
+
     }
 
     @Override
@@ -58,11 +58,13 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView imageView;
+//        ImageView imageView;
+        TextView textView;
 
         ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.cell_image);
+//            imageView = itemView.findViewById(R.id.play_trailer_icon);
+            textView = itemView.findViewById(R.id.trailer_name_test);
             itemView.setOnClickListener(this);
         }
 
@@ -77,5 +79,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
+
 
 }

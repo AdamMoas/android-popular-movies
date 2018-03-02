@@ -6,15 +6,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.portfolio.moas.adam.popularmovies.R;
 import com.portfolio.moas.adam.popularmovies.data.ApiUtils;
 import com.portfolio.moas.adam.popularmovies.data.model.Movie;
+import com.portfolio.moas.adam.popularmovies.data.model.Trailer;
 import com.portfolio.moas.adam.popularmovies.data.model.TrailerResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
+import com.portfolio.moas.adam.popularmovies.features.ItemClickListener;
 import com.portfolio.moas.adam.popularmovies.utils.Constants;
 import com.portfolio.moas.adam.popularmovies.utils.ErrorHelper;
 import com.squareup.picasso.Picasso;
@@ -29,7 +35,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements ItemClickListener {
 
     @BindView(R.id.movie_title)
     TextView mMovieTitle;
@@ -44,11 +50,17 @@ public class MovieDetailActivity extends AppCompatActivity {
     @BindView(R.id.movie_favourite)
     ImageView mFavouriteStarImage;
 
-//    @BindView(R.id.trailer_text)
-//    TextView mTrailerText;
+    @BindView(R.id.trailer_heading_title)
+    TextView mTrailerTitle;
+
+    @BindView(R.id.rv_trailers)
+    RecyclerView mRVTrailers;
+
+    TrailerRecyclerViewAdapter mTrailerAdapter;
 
     private MovieDbService movieDbService;
     private ArrayList<Movie> mMovies;
+    private List<Trailer> mTrailers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,20 +73,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         int movieItemPosition = getIntent().getIntExtra(Constants.MOVIE_POSITION_EXTRA, 0);
 
         bindMovieDetailData(mMovies, movieItemPosition);
+        setUpRecyclerView();
+
     }
 
     private void bindMovieDetailData(ArrayList<Movie> movie, int position) {
-            float voteAverage = movie.get(position).getVoteAverage();
-            int scoreTotal = 10;
-            // Referenced from: https://developer.android.com/guide/topics/resources/string-resource.html#FormattingAndStyling
-            String formattedVotedAverage = getResources().getString(R.string.user_rating, voteAverage, scoreTotal);
+        float voteAverage = movie.get(position).getVoteAverage();
+        int scoreTotal = 10;
+        // Referenced from: https://developer.android.com/guide/topics/resources/string-resource.html#FormattingAndStyling
+        String formattedVotedAverage = getResources().getString(R.string.user_rating, voteAverage, scoreTotal);
 
-            mMovieTitle.setText(movie.get(position).getTitle());
-            mMovieOverview.setText(movie.get(position).getOverview());
-            mMovieReleaseDate.setText(movie.get(position).getReleaseDate());
-            mMovieVoteAverage.setText(formattedVotedAverage);
-            displayPosterImage(mMoviePosterImage, movie, position);
-            fetchMovieTrailers(position);
+        mMovieTitle.setText(movie.get(position).getTitle());
+        mMovieOverview.setText(movie.get(position).getOverview());
+        mMovieReleaseDate.setText(movie.get(position).getReleaseDate());
+        mMovieVoteAverage.setText(formattedVotedAverage);
+        displayPosterImage(mMoviePosterImage, movie, position);
+        fetchMovieTrailers(position);
     }
 
     private void displayPosterImage(ImageView imageView, ArrayList<Movie> movie, int position) {
@@ -113,17 +127,10 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
                 if (response.isSuccessful()) {
-                    int numberOfTrailers = response.body().getResults().size();
-                    List<String> youtubeKeys = new ArrayList<>();
-
-                    Log.d("Youtube Key number: ", "" + numberOfTrailers);
-                    Log.d("Youtube Key number: id", "" + movieId);
-
-                    for (int i = 0; i <= numberOfTrailers - 1; i++) {
-                        youtubeKeys.add(response.body().getResults().get(i).getKey());
-                        System.out.println("Key position: " + i + " - Key value: " + youtubeKeys.get(i));
-//                        mTrailerText.append(youtubeKeys.get(i) + "\n "); //TODO this is causing some of the views to glitch - replace with RV
-                    }
+                    mTrailers = response.body().getResults();
+                    int numberOfTrailers = mTrailers.size();
+                    setUpAdapter(numberOfTrailers);
+                    displayMovieTrailerTitle();
                 }
             }
 
@@ -134,8 +141,21 @@ public class MovieDetailActivity extends AppCompatActivity {
                         getString(R.string.network_error_message));
             }
         });
+    }
 
+    private void setUpRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRVTrailers.getContext(), linearLayoutManager.getOrientation());
 
+        mRVTrailers.setLayoutManager(linearLayoutManager);
+        mRVTrailers.setHasFixedSize(true);
+        mRVTrailers.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void setUpAdapter(int trailerCount) {
+        mTrailerAdapter = new TrailerRecyclerViewAdapter(this, trailerCount, mTrailers);
+        mTrailerAdapter.setClickListener(this);
+        mRVTrailers.setAdapter(mTrailerAdapter);
     }
 
     private void launchYoutubeIntent(Context context, String youtubeKey) {
@@ -149,5 +169,20 @@ public class MovieDetailActivity extends AppCompatActivity {
                 context.startActivity(websiteIntent);
             }
         }
+    }
+
+    private void displayMovieTrailerTitle() {
+        if (mTrailers.size() > 0) {
+            mTrailerTitle.setVisibility(View.VISIBLE);
+            mRVTrailers.setVisibility(View.VISIBLE);
+        } else {
+            mTrailerTitle.setVisibility(View.INVISIBLE);
+            mRVTrailers.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        //TODO
     }
 }
