@@ -32,7 +32,7 @@
 
     <!--Headings-->
     <string name="trailer_heading">Trailers:</string>
-    <string name="review_button">Reviews:</string>
+    <string name="review_heading">Reviews:</string>
 
     <!--Youtube link urls-->
     <string name="youtube_app_intent">vnd.youtube:</string>

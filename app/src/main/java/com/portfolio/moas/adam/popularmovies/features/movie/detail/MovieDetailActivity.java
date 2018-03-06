@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.portfolio.moas.adam.popularmovies.R;
 import com.portfolio.moas.adam.popularmovies.data.ApiUtils;
 import com.portfolio.moas.adam.popularmovies.data.model.Movie;
+import com.portfolio.moas.adam.popularmovies.data.model.Review;
+import com.portfolio.moas.adam.popularmovies.data.model.ReviewResponse;
 import com.portfolio.moas.adam.popularmovies.data.model.Trailer;
 import com.portfolio.moas.adam.popularmovies.data.model.TrailerResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
@@ -56,11 +58,19 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
     @BindView(R.id.rv_trailers)
     RecyclerView mRVTrailers;
 
+    @BindView(R.id.review_heading_title)
+    TextView reviewTitle;
+
+    @BindView(R.id.rv_reviews)
+    RecyclerView rVReviews;
+
     TrailerRecyclerViewAdapter mTrailerAdapter;
+    ReviewRecyclerViewAdapter reviewAdapter;
 
     private MovieDbService movieDbService;
     private ArrayList<Movie> mMovies;
     private List<Trailer> mTrailers;
+    private List<Review> reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +83,8 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
         int movieItemPosition = getIntent().getIntExtra(Constants.MOVIE_POSITION_EXTRA, 0);
 
         bindMovieDetailData(mMovies, movieItemPosition);
-        setUpRecyclerView();
+        setUpRecyclerView(mRVTrailers);
+        setUpRecyclerView(rVReviews);
 
     }
 
@@ -89,6 +100,7 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
         mMovieVoteAverage.setText(formattedVotedAverage);
         displayPosterImage(mMoviePosterImage, movie, position);
         fetchMovieTrailers(position);
+        fetchMovieReviews(position);
     }
 
     private void displayPosterImage(ImageView imageView, ArrayList<Movie> movie, int position) {
@@ -118,7 +130,7 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
                 if (response.isSuccessful()) {
                     mTrailers = response.body().getResults();
                     int numberOfTrailers = mTrailers.size();
-                    setUpAdapter(numberOfTrailers);
+                    setUpTrailerAdapter(numberOfTrailers);
                     displayMovieTrailerTitle();
                 }
             }
@@ -132,19 +144,53 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
         });
     }
 
-    private void setUpRecyclerView() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRVTrailers.getContext(), linearLayoutManager.getOrientation());
+    private void fetchMovieReviews(int position) {
+        final int movieId = mMovies.get(position).getId();
+        String apiKey = getString(R.string.TMDB_API_KEY);
+        if (apiKey.isEmpty()) {
+            Log.d("API-KEY", "API Key missing");
+            return;
+        }
 
-        mRVTrailers.setLayoutManager(linearLayoutManager);
-        mRVTrailers.setHasFixedSize(true);
-        mRVTrailers.addItemDecoration(dividerItemDecoration);
+        Call<ReviewResponse> call = movieDbService.getReviews(movieId, apiKey);
+        call.enqueue(new Callback<ReviewResponse>() {
+            @Override
+            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
+                if (response.isSuccessful()) {
+                    reviews = response.body().getResults();
+                    int numberOfReviews = reviews.size();
+                    setUpReviewAdapter(numberOfReviews);
+                    displayMovieReviewTitle();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+                ErrorHelper.displayError(MovieDetailActivity.this,
+                        findViewById(R.id.movie_detail_layout),
+                        getString(R.string.network_error_message));
+            }
+        });
     }
 
-    private void setUpAdapter(int trailerCount) {
+    private void setUpRecyclerView(RecyclerView recyclerView) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+    }
+
+    private void setUpTrailerAdapter(int trailerCount) {
         mTrailerAdapter = new TrailerRecyclerViewAdapter(this, trailerCount, mTrailers);
         mTrailerAdapter.setClickListener(this);
         mRVTrailers.setAdapter(mTrailerAdapter);
+    }
+
+    private void setUpReviewAdapter(int reviewCount) {
+        reviewAdapter = new ReviewRecyclerViewAdapter(this, reviewCount, reviews);
+        rVReviews.setAdapter(reviewAdapter);
     }
 
     private void launchYoutube(Context context, String youtubeKey) {
@@ -165,8 +211,18 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
             mTrailerTitle.setVisibility(View.VISIBLE);
             mRVTrailers.setVisibility(View.VISIBLE);
         } else {
-            mTrailerTitle.setVisibility(View.INVISIBLE);
-            mRVTrailers.setVisibility(View.INVISIBLE);
+            mTrailerTitle.setVisibility(View.GONE);
+            mRVTrailers.setVisibility(View.GONE);
+        }
+    }
+
+    private void displayMovieReviewTitle() {
+        if (reviews.size() > 0) {
+            reviewTitle.setVisibility(View.VISIBLE);
+            rVReviews.setVisibility(View.VISIBLE);
+        } else {
+            reviewTitle.setVisibility(View.GONE);
+            rVReviews.setVisibility(View.GONE);
         }
     }
 
