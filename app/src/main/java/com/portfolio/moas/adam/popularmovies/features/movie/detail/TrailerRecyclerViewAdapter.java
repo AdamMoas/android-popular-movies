@@ -40,16 +40,8 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
 
     @Override
     public void onBindViewHolder(TrailerRecyclerViewAdapter.ViewHolder holder, int position) {
-//        List<String> youtubeKeys = new ArrayList<>();
-//        youtubeKeys.add(mTrailers.get(position).getKey());
-//        youtubeKeys.get(position);
-
-//        mTrailers.get(position).getKey();
         String trailerName = mTrailers.get(position).getName();
         holder.textView.setText(trailerName);
-
-        String trailerKey = mTrailers.get(position).getKey(); // TODO
-
     }
 
     @Override
@@ -58,12 +50,10 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-//        ImageView imageView;
         TextView textView;
 
         ViewHolder(View itemView) {
             super(itemView);
-//            imageView = itemView.findViewById(R.id.play_trailer_icon);
             textView = itemView.findViewById(R.id.trailer_name_test);
             itemView.setOnClickListener(this);
         }

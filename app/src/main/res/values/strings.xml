@@ -4,6 +4,7 @@
 
     <!--Content descriptions-->
     <string name="poster_image">Poster Image displaying movie</string>
+    <string name="trailer_button">Play Button</string>
 
     <!--Menu item names-->
     <string name="top_rated_action">Sort by: Top Rated</string>
@@ -32,4 +33,8 @@
     <!--Headings-->
     <string name="trailer_heading">Trailers:</string>
     <string name="review_button">Reviews:</string>
+
+    <!--Youtube link urls-->
+    <string name="youtube_app_intent">vnd.youtube:</string>
+    <string name="youtube_web_intent">http://youtube.com/watch?v=</string>
 </resources>

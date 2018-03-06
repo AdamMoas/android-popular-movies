@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/movie_detail_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -8,7 +9,9 @@
         android:id="@+id/movie_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/movie_release_date"
@@ -17,7 +20,9 @@
         android:layout_margin="8dp"
         android:layout_toEndOf="@+id/movie_poster"
         android:layout_toRightOf="@+id/movie_poster"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintLeft_toRightOf="@+id/movie_poster"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <!--Favourite star image obtained from: https://romannurik.github.io/AndroidAssetStudio/index.html-->
     <ImageView
@@ -27,11 +32,12 @@
         android:layout_margin="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toEndOf="@id/movie_release_date"
-        android:layout_toRightOf="@+id/movie_release_date"
         android:scaleX="2"
         android:scaleY="2"
-        android:src="@drawable/ic_star_border" />
+        android:src="@drawable/ic_star_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/movie_release_date"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/movie_vote_average"
@@ -39,18 +45,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/movie_release_date"
         android:layout_margin="8dp"
-        android:layout_toEndOf="@id/movie_poster"
-        android:layout_toRightOf="@+id/movie_poster"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintLeft_toRightOf="@id/movie_poster"
+        app:layout_constraintTop_toBottomOf="@+id/movie_favourite" />
 
     <TextView
         android:id="@+id/movie_overview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/movie_poster"
         android:layout_margin="8dp"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_poster" />
 
-    <include layout="@layout/trailer_list_rv" />
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

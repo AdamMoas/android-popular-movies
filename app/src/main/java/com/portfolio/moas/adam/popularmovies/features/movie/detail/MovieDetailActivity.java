@@ -103,17 +103,6 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
         Log.d("ImagePath: ", moviePosterBaseUrl + posterImagePath);
     }
 
-    private void setupYouTubeLink(Bundle extras) {
-        String baseUrl = "http://api.themoviedb.org/3/movie";
-        String apiKey = getString(R.string.TMDB_API_KEY);
-        int id = extras.getInt(getString(R.string.movie_trailer_key));
-        String finalUrl = baseUrl + "/" + id + "/" + "videos?api_key=" + apiKey;
-        https:
-//www.youtube.com/watch?v=xKJmEC5ieOk
-        System.out.println("FinalURL: " + finalUrl);
-    }
-
-
     private void fetchMovieTrailers(int position) {
         final int movieId = mMovies.get(position).getId();
         String apiKey = getString(R.string.TMDB_API_KEY);
@@ -158,9 +147,9 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
         mRVTrailers.setAdapter(mTrailerAdapter);
     }
 
-    private void launchYoutubeIntent(Context context, String youtubeKey) {
-        Intent youTubeAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + youtubeKey));
-        Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://youtube.com/watch?v=" + youtubeKey));
+    private void launchYoutube(Context context, String youtubeKey) {
+        Intent youTubeAppIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_app_intent) + youtubeKey));
+        Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_web_intent) + youtubeKey));
 
         if (context != null) {
             try {
@@ -183,6 +172,7 @@ public class MovieDetailActivity extends AppCompatActivity implements ItemClickL
 
     @Override
     public void onItemClick(View view, int position) {
-        //TODO
+        String trailerKey = mTrailers.get(position).getKey();
+        launchYoutube(this, trailerKey);
     }
 }
