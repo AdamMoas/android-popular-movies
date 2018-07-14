@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    tools:context="com.portfolio.moas.adam.popularmovies.MainActivity">
+    tools:context="com.portfolio.moas.adam.popularmovies.features.main.screen.MainActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_movie_thumbnails"

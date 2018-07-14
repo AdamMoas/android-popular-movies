@@ -32,11 +32,18 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-
-    compile 'com.squareup.picasso:picasso:2.5.2'
     compile group: 'info.movito', name: 'themoviedbapi', version: '1.6'
     compile 'com.google.code.gson:gson:2.8.2'
 
+    //Butter Knife
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    //Square libraries
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //RecyclerView
+    compile 'com.android.support:recyclerview-v7:26.1.0'
 }
