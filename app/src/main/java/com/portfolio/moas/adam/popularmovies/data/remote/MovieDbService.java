@@ -15,16 +15,6 @@ import retrofit2.http.Query;
 
 public interface MovieDbService {
 
-//    String base = "http://api.themoviedb.org/3/movie/";
-//    String movieTrailerURLQuery = "[ID]/videos?api_key=[API-KEY]";
-//    String movieReviewURLQuery = "[ID]/reviews?api_key=[API-KEY]";
-//    String exampleMovieId = "211672";
-//
-//    String movieListPopular = "popular?api_key=[API-KEY]";
-//    String movieListTopRated = "top_rated?api_key=[API-KEY]";
-//
-//    String language = "&language=en-US";
-
     @GET("movie/{filter}")
     Call<MovieResponse> getAllMovies(@Path("filter") String filter, @Query("api_key") String apiKey);
 
