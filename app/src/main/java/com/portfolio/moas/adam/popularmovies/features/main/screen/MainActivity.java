@@ -36,7 +36,6 @@ import static com.portfolio.moas.adam.popularmovies.utils.Constants.SORT_BY_TOP_
 
 public class MainActivity extends AppCompatActivity implements ItemClickListener {
 
-    MovieRecyclerViewAdapter movieRecyclerViewAdapter;
     private int movieCount;
 
     @BindView(R.id.pb_loading)
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
     }
 
     private void setUpAdapter(int movieCount) {
-        movieRecyclerViewAdapter = new MovieRecyclerViewAdapter(this, movieCount, mMovies);
+        MovieRecyclerViewAdapter movieRecyclerViewAdapter = new MovieRecyclerViewAdapter(this, movieCount, mMovies);
         movieRecyclerViewAdapter.setClickListener(this);
         recyclerView.setAdapter(movieRecyclerViewAdapter);
     }

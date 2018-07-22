@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 
-public class FavouritesContract {
+class FavouritesContract {
 
     /*
      * The "Content authority" is a name for the entire content provider, similar to the
@@ -12,15 +12,15 @@ public class FavouritesContract {
      * content authority is the package name for the app, which is guaranteed to be unique on the
      * Play Store.
      */
-    public static final String CONTENT_AUTHORITY = "com.portfolio.moas.adam.popularmovies";
+    static final String CONTENT_AUTHORITY = "com.portfolio.moas.adam.popularmovies";
 
     /*
      * Use CONTENT_AUTHORITY to create the base of all URI's which apps will use to contact
      * the content provider for Sunshine.
      */
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_FAVOURITES = "favourites";
+    static final String PATH_FAVOURITES = "favourites";
 
     public static final class FavouritesEntry implements BaseColumns {
 
@@ -30,10 +30,10 @@ public class FavouritesContract {
                 .build();
 
         /* Used internally as the name of our weather table. */
-        public static final String TABLE_NAME = "favourites";
+        static final String TABLE_NAME = "favourites";
 
-        public static final String COLUMN_MOVIE_ID = "movieId";
-        public static final String COLUMN_MOVIE_TITLE = "movieTitle";
+        static final String COLUMN_MOVIE_ID = "movieId";
+        static final String COLUMN_MOVIE_TITLE = "movieTitle";
         //Todo later implementation
         public static final String COLUMN_MOVIE_POSTER = "moviePoster";
         public static final String COLUMN_MOVIE_SYNOPSIS = "movieSynopsis";
