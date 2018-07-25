@@ -7,6 +7,19 @@
     android:orientation="vertical"
     tools:context="com.portfolio.moas.adam.popularmovies.features.main.screen.MainActivity">
 
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/contentFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <!--TODO: to be moved into fragment-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_movie_thumbnails"
         android:layout_width="match_parent"

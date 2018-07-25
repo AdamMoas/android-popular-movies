@@ -2,9 +2,11 @@ package com.portfolio.moas.adam.popularmovies.features.main.screen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,7 @@ import com.portfolio.moas.adam.popularmovies.data.model.MovieResponse;
 import com.portfolio.moas.adam.popularmovies.data.remote.MovieDbService;
 import com.portfolio.moas.adam.popularmovies.features.ItemClickListener;
 import com.portfolio.moas.adam.popularmovies.features.movie.detail.MovieDetailActivity;
+import com.portfolio.moas.adam.popularmovies.utils.ActivityUtils;
 import com.portfolio.moas.adam.popularmovies.utils.Constants;
 import com.portfolio.moas.adam.popularmovies.utils.ErrorHelper;
 import com.portfolio.moas.adam.popularmovies.utils.NetworkUtils;
@@ -36,6 +39,8 @@ import static com.portfolio.moas.adam.popularmovies.utils.Constants.SORT_BY_TOP_
 
 public class MainActivity extends AppCompatActivity implements ItemClickListener {
 
+    public static final String MAIN_SCREEN_ID = "MAIN_SCREEN_ID";
+
     private int movieCount;
 
     @BindView(R.id.pb_loading)
@@ -51,6 +56,19 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        // Get the requested task id
+        String mainScreenId = getIntent().getStringExtra(MAIN_SCREEN_ID);
+
+        MainScreenFragment mainScreenFragment = (MainScreenFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.contentFrame);
+
+        if (mainScreenFragment == null) {
+            mainScreenFragment = MainScreenFragment.newInstance(mainScreenId);
+
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    mainScreenFragment, R.id.contentFrame);
+        }
 
         movieDbService = ApiUtils.getMovieDbService();
 
