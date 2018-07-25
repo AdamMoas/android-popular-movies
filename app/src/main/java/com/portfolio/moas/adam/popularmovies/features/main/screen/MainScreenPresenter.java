@@ -16,6 +16,7 @@ public class MainScreenPresenter implements MainScreenContract.Presenter {
                         @NonNull MovieDbService movieDbService) {
         this.mainScreenView = checkNotNull(mainScreenView);
         this.movieDbService = checkNotNull(movieDbService);
+        mainScreenView.setPresenter(this);
     }
 
     @Override
