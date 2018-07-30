@@ -12,8 +12,6 @@ import com.portfolio.moas.adam.popularmovies.utils.NetworkUtils;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String MAIN_SCREEN_ID = "MAIN_SCREEN_ID";
@@ -22,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
 
         // Get the requested task id
         String mainScreenId = getIntent().getStringExtra(MAIN_SCREEN_ID);

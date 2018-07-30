@@ -29,8 +29,7 @@ public class MainScreenPresenter implements MainScreenContract.Presenter {
     MainScreenPresenter(@NonNull MainScreenContract.View mainScreenView,
                         @NonNull MovieDbService movieDbService,
                         @NonNull ArrayList<Movie> movies,
-                        boolean isDeviceConnected
-    ) {
+                        boolean isDeviceConnected) {
         this.mainScreenView = checkNotNull(mainScreenView);
         this.movieDbService = checkNotNull(movieDbService);
         this.movieList = checkNotNull(movies);
@@ -74,7 +73,6 @@ public class MainScreenPresenter implements MainScreenContract.Presenter {
                 Log.d("Failure", t.toString());
             }
         });
-
     }
 
     @Override
