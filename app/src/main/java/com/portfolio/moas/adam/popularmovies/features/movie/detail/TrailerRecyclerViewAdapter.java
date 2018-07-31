@@ -21,14 +21,12 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
 
     private LayoutInflater mLayoutInflater;
     private ItemClickListener mClickListener;
-    private Context mContext;
     private int mNumItems;
     private List<Trailer> mTrailers;
 
     TrailerRecyclerViewAdapter(Context context, int numItems, List<Trailer> trailers) {
         mNumItems = numItems;
-        mContext = context;
-        mLayoutInflater = LayoutInflater.from(mContext);
+        mLayoutInflater = LayoutInflater.from(context);
         mTrailers = trailers;
     }
 

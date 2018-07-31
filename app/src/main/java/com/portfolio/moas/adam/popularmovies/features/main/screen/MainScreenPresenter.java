@@ -53,8 +53,8 @@ public class MainScreenPresenter implements MainScreenContract.Presenter {
         Call<MovieResponse> call = movieDbService.getAllMovies(sortBy, API_KEY);
         call.enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<MovieResponse> call, @NonNull Response<MovieResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     ArrayList<Movie> movies = response.body().getResults();
                     movieList = movies;
                     movieCount = movies.size();
@@ -67,7 +67,7 @@ public class MainScreenPresenter implements MainScreenContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<MovieResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieResponse> call, @NonNull Throwable t) {
                 mainScreenView.hideLoadingIndicator();
                 mainScreenView.displayError(R.id.main_layout, R.string.api_response_failure_message);
                 Log.d("Failure", t.toString());

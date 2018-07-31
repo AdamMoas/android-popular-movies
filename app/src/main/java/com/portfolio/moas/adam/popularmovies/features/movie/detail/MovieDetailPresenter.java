@@ -55,8 +55,8 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
         Call<TrailerResponse> call = movieDbService.getTrailers(movieId, API_KEY);
         call.enqueue(new Callback<TrailerResponse>() {
             @Override
-            public void onResponse(Call<TrailerResponse> call, Response<TrailerResponse> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<TrailerResponse> call, @NonNull Response<TrailerResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     trailers = response.body().getResults();
                     int numberOfTrailers = trailers.size();
                     movieDetailView.setUpTrailerAdapter(numberOfTrailers, trailers);
@@ -65,7 +65,7 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<TrailerResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<TrailerResponse> call, @NonNull Throwable t) {
                 movieDetailView.displayError(R.id.movie_detail_layout, R.string.network_error_message);
             }
         });
@@ -81,8 +81,8 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
         Call<ReviewResponse> call = movieDbService.getReviews(movieId, API_KEY);
         call.enqueue(new Callback<ReviewResponse>() {
             @Override
-            public void onResponse(Call<ReviewResponse> call, Response<ReviewResponse> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NonNull Call<ReviewResponse> call, @NonNull Response<ReviewResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     reviews = response.body().getResults();
                     int numberOfReviews = reviews.size();
                     movieDetailView.setUpReviewAdapter(numberOfReviews, reviews);
@@ -91,7 +91,7 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<ReviewResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<ReviewResponse> call, @NonNull Throwable t) {
                 movieDetailView.displayError(R.id.movie_detail_layout, R.string.network_error_message);
             }
         });

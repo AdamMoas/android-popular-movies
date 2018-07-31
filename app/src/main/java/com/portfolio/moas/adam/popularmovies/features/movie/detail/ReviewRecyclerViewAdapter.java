@@ -19,14 +19,12 @@ import java.util.List;
 public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private Context context;
     private int numItems;
     private List<Review> reviews;
 
     ReviewRecyclerViewAdapter(Context context, int numItems, List<Review> reviews) {
         this.numItems = numItems;
-        this.context = context;
-        layoutInflater = LayoutInflater.from(this.context);
+        layoutInflater = LayoutInflater.from(context);
         this.reviews = reviews;
     }
 
@@ -48,7 +46,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
         return numItems;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
 
         ViewHolder(View itemView) {
