@@ -58,9 +58,6 @@ public class MainScreenPresenter implements MainScreenContract.Presenter {
                     ArrayList<Movie> movies = response.body().getResults();
                     movieList = movies;
                     movieCount = movies.size();
-                    for (int i = 0; i < movies.size(); i++) {
-                        System.out.println("Title: " + movies.get(i).getOverview());
-                    }
                     mainScreenView.hideLoadingIndicator();
                     displayMovies();
                 }
